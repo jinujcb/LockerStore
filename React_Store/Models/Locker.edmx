@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LockerBankModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LockerBanks">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="LocationID" Type="int" />
+        </EntityType>
+        <EntityType Name="LockerList">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
+          <Property Name="LockerBanksID" Type="int" Nullable="false" />
+          <Property Name="LockersID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lockers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="LockerBanksID" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LockerBank.dbo.users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="password" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__LockerBan__Locat__797309D9">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="LockerBanks" Type="Self.LockerBanks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LockerBanks">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LockerLis__Locat__7F2BE32F">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="LockerList" Type="Self.LockerList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LockerList">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LockerLis__Locke__00200768">
+          <End Role="LockerBanks" Type="Self.LockerBanks" Multiplicity="1" />
+          <End Role="LockerList" Type="Self.LockerList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LockerBanks">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LockerList">
+              <PropertyRef Name="LockerBanksID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LockerLis__Locke__01142BA1">
+          <End Role="Lockers" Type="Self.Lockers" Multiplicity="1" />
+          <End Role="LockerList" Type="Self.LockerList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lockers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LockerList">
+              <PropertyRef Name="LockersID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Lockers__LockerB__7C4F7684">
+          <End Role="LockerBanks" Type="Self.LockerBanks" Multiplicity="0..1" />
+          <End Role="Lockers" Type="Self.Lockers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LockerBanks">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Lockers">
+              <PropertyRef Name="LockerBanksID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LockerBankModelStoreContainer">
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LockerBanks" EntityType="Self.LockerBanks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LockerList" EntityType="Self.LockerList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lockers" EntityType="Self.Lockers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [users].[Id] AS [Id], 
+    [users].[Name] AS [Name], 
+    [users].[password] AS [password]
+    FROM [dbo].[users] AS [users]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__LockerBan__Locat__797309D9" Association="Self.FK__LockerBan__Locat__797309D9">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="LockerBanks" EntitySet="LockerBanks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LockerLis__Locat__7F2BE32F" Association="Self.FK__LockerLis__Locat__7F2BE32F">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="LockerList" EntitySet="LockerList" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LockerLis__Locke__00200768" Association="Self.FK__LockerLis__Locke__00200768">
+            <End Role="LockerBanks" EntitySet="LockerBanks" />
+            <End Role="LockerList" EntitySet="LockerList" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LockerLis__Locke__01142BA1" Association="Self.FK__LockerLis__Locke__01142BA1">
+            <End Role="Lockers" EntitySet="Lockers" />
+            <End Role="LockerList" EntitySet="LockerList" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Lockers__LockerB__7C4F7684" Association="Self.FK__Lockers__LockerB__7C4F7684">
+            <End Role="LockerBanks" EntitySet="LockerBanks" />
+            <End Role="Lockers" EntitySet="Lockers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LockerBankModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="LockerBanks" Relationship="Self.FK__LockerBan__Locat__797309D9" FromRole="Location" ToRole="LockerBanks" />
+          <NavigationProperty Name="LockerLists" Relationship="Self.FK__LockerLis__Locat__7F2BE32F" FromRole="Location" ToRole="LockerList" />
+        </EntityType>
+        <EntityType Name="LockerBank">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LocationID" Type="Int32" />
+          <NavigationProperty Name="Location" Relationship="Self.FK__LockerBan__Locat__797309D9" FromRole="LockerBanks" ToRole="Location" />
+          <NavigationProperty Name="LockerLists" Relationship="Self.FK__LockerLis__Locke__00200768" FromRole="LockerBanks" ToRole="LockerList" />
+          <NavigationProperty Name="Lockers" Relationship="Self.FK__Lockers__LockerB__7C4F7684" FromRole="LockerBanks" ToRole="Lockers" />
+        </EntityType>
+        <EntityType Name="LockerList">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="LockerBanksID" Type="Int32" Nullable="false" />
+          <Property Name="LockersID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Location" Relationship="Self.FK__LockerLis__Locat__7F2BE32F" FromRole="LockerList" ToRole="Location" />
+          <NavigationProperty Name="LockerBank" Relationship="Self.FK__LockerLis__Locke__00200768" FromRole="LockerList" ToRole="LockerBanks" />
+          <NavigationProperty Name="Locker" Relationship="Self.FK__LockerLis__Locke__01142BA1" FromRole="LockerList" ToRole="Lockers" />
+        </EntityType>
+        <EntityType Name="Locker">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LockerBanksID" Type="Int32" />
+          <NavigationProperty Name="LockerBank" Relationship="Self.FK__Lockers__LockerB__7C4F7684" FromRole="Lockers" ToRole="LockerBanks" />
+          <NavigationProperty Name="LockerLists" Relationship="Self.FK__LockerLis__Locke__01142BA1" FromRole="Lockers" ToRole="LockerList" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="password" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__LockerBan__Locat__797309D9">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="LockerBanks" Type="Self.LockerBank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LockerBanks">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LockerLis__Locat__7F2BE32F">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="LockerList" Type="Self.LockerList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LockerList">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LockerLis__Locke__00200768">
+          <End Role="LockerBanks" Type="Self.LockerBank" Multiplicity="1" />
+          <End Role="LockerList" Type="Self.LockerList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LockerBanks">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LockerList">
+              <PropertyRef Name="LockerBanksID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Lockers__LockerB__7C4F7684">
+          <End Role="LockerBanks" Type="Self.LockerBank" Multiplicity="0..1" />
+          <End Role="Lockers" Type="Self.Locker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LockerBanks">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Lockers">
+              <PropertyRef Name="LockerBanksID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LockerLis__Locke__01142BA1">
+          <End Role="Lockers" Type="Self.Locker" Multiplicity="1" />
+          <End Role="LockerList" Type="Self.LockerList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lockers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LockerList">
+              <PropertyRef Name="LockersID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LockerBankEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="LockerBanks" EntityType="Self.LockerBank" />
+          <EntitySet Name="LockerLists" EntityType="Self.LockerList" />
+          <EntitySet Name="Lockers" EntityType="Self.Locker" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="FK__LockerBan__Locat__797309D9" Association="Self.FK__LockerBan__Locat__797309D9">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="LockerBanks" EntitySet="LockerBanks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LockerLis__Locat__7F2BE32F" Association="Self.FK__LockerLis__Locat__7F2BE32F">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="LockerList" EntitySet="LockerLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LockerLis__Locke__00200768" Association="Self.FK__LockerLis__Locke__00200768">
+            <End Role="LockerBanks" EntitySet="LockerBanks" />
+            <End Role="LockerList" EntitySet="LockerLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Lockers__LockerB__7C4F7684" Association="Self.FK__Lockers__LockerB__7C4F7684">
+            <End Role="LockerBanks" EntitySet="LockerBanks" />
+            <End Role="Lockers" EntitySet="Lockers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LockerLis__Locke__01142BA1" Association="Self.FK__LockerLis__Locke__01142BA1">
+            <End Role="Lockers" EntitySet="Lockers" />
+            <End Role="LockerList" EntitySet="LockerLists" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LockerBankModelStoreContainer" CdmEntityContainer="LockerBankEntities">
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="LockerBankModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LockerBanks">
+            <EntityTypeMapping TypeName="LockerBankModel.LockerBank">
+              <MappingFragment StoreEntitySet="LockerBanks">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LockerLists">
+            <EntityTypeMapping TypeName="LockerBankModel.LockerList">
+              <MappingFragment StoreEntitySet="LockerList">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="LockerBanksID" ColumnName="LockerBanksID" />
+                <ScalarProperty Name="LockersID" ColumnName="LockersID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lockers">
+            <EntityTypeMapping TypeName="LockerBankModel.Locker">
+              <MappingFragment StoreEntitySet="Lockers">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LockerBanksID" ColumnName="LockerBanksID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="LockerBankModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="LockerBankModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
